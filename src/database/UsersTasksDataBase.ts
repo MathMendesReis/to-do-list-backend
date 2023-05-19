@@ -9,24 +9,19 @@ export class UsersTasksBaseDataBase extends BaseDataBase {
   public static tasks = "tasks";
 
 
-  public getAllUsers_tasks = async () => {
-    // return await BaseDataBase.connetion(UsersTasksBaseDataBase.tasks)
-    //   .select("users.*","tasks.*")
-    //   .from(UsersTasksBaseDataBase.tasks)
-    //   .innerJoin(UsersTasksBaseDataBase.users_tasks, 'tasks.id', 'users_tasks.task_id')
-    //   .innerJoin(UsersTasksBaseDataBase.users, 'users.id', 'users_tasks.user_id');
-
-    return await BaseDataBase.connetion(UsersTasksBaseDataBase.users_tasks)
-    .select("tasks.*",
-    "users.*",
-    "tasks.id as task_id",
-    "users.id as users_id"
-    )
-    .from(UsersTasksBaseDataBase.users_tasks)
-    .innerJoin(UsersTasksBaseDataBase.tasks, 'tasks.id', 'users_tasks.task_id')
-    .innerJoin(UsersTasksBaseDataBase.users, "users.id", "users_tasks.user_id");
+  public getAllUsers_tasks = async (id:string) => {   
+    const users = await BaseDataBase.connetion(UsersTasksBaseDataBase.users_tasks)
+    .where({task_id:id})
+    .select("users.*","users_tasks.*")
+    .from("users")
+    .innerJoin(UsersTasksBaseDataBase.users_tasks, "users.id", "users_tasks.user_id")
+    return users
 
   };
+  public getAllTask =async () => {
+    return await BaseDataBase.connetion(UsersTasksBaseDataBase.tasks)
+  }
+
   public postUsers_tasks = async (input: UserTasks): Promise<void> => {
     return await BaseDataBase.connetion(
       UsersTasksBaseDataBase.users_tasks

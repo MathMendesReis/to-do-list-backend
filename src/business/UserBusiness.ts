@@ -7,11 +7,14 @@ import { getUser } from '../dtos/usersDTOs/getUserById';
 import { BadRequestError } from '../erros/BadResquestError';
 import { Users } from '../models/Users';
 import { getDTO_output } from '../dtos/usersDTOs/getDTO';
+import { TokenManager } from '../services/TokenManager';
 
 export class UserBusiness{
     constructor(
         private userDataBase:UserDataBase,
-        private idGenerator: IdGenerator
+        private idGenerator: IdGenerator,
+        private tokenManager: TokenManager
+
         ){}
     public getAllUsers =async ():Promise<getDTO_output[]> => {
        const result = await this.userDataBase.getAllUsers()
@@ -49,7 +52,7 @@ export class UserBusiness{
         const isUser = await this.userDataBase.getUserById(id)
         console.log(id)
         if(!isUser){
-           throw new NotFoundError
+           throw new NotFoundError("Usuario não encontrado")
         }
         await this.userDataBase.deleteUser(id)
         
