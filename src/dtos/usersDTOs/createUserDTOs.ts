@@ -1,6 +1,5 @@
 import z from "zod";
 export interface createUserDTO_input {
-  id: string;
   name: string;
   email: string;
   password: string;
@@ -12,12 +11,17 @@ export interface createUserDTO_output {
 
 export const createUserDTO_inputSchemma = z
   .object({
-    id: z.string({
-      required_error: "'id' é obrigatória",
-      invalid_type_error: "'id' deve ser do tipo string",
+    name: z.string({
+      required_error:"name is required",
+      invalid_type_error:"'name' must be a string. "
     }),
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string(),
+    email: z.string({
+      required_error:"email is required",
+      invalid_type_error:"'email' must be a string. "
+    }).email(),
+    password: z.string({
+      required_error:"password is required",
+      invalid_type_error:"'password' must be a string. "
+    }),
   })
   .transform((data) => data as createUserDTO_input);

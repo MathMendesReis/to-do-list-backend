@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { userRouter } from './router/userRouter'
 import { taskRouter } from './router/taskRouter'
+import { userTaskRouter } from './router/usersTasksRouter'
 
 
 const app = express()
@@ -15,4 +16,5 @@ app.listen(process.env.PORT || 3003, () => {
 
 app.use("/users", userRouter)
 app.use("/task", taskRouter)
+app.use("/users/tasks", userTaskRouter)
 

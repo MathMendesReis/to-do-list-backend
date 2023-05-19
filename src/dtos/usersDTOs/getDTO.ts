@@ -1,4 +1,5 @@
 export interface getDTO_output {
+    id:string,
     name:string,
     email:string
 }
