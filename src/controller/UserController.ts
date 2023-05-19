@@ -14,6 +14,8 @@ export class UserController {
       const result = await this.userBusiness.getAllUsers();
       res.status(200).send(result);
     } catch (error) {
+      console.log(error);
+
       if (error instanceof ZodError) {
         res.status(400).send(error.issues);
       } else if (error instanceof BaseError) {
@@ -25,16 +27,16 @@ export class UserController {
   };
   public createUser = async (req: Request, res: Response): Promise<void> => {
     try {
-      const input: createUserDTO_input = {
-        id: req.body.id,
+      const input = createUserDTO_inputSchemma.parse({
         name: req.body.name,
         email: req.body.email,
-        password: req.body,
-      };
+        password: req.body.password,
+      });
       const result = await this.userBusiness.createUser(input);
 
       res.status(200).send(result);
     } catch (error) {
+      console.log(error)
       if (error instanceof ZodError) {
         res.status(400).send(error.issues);
       } else if (error instanceof BaseError) {
@@ -50,6 +52,8 @@ export class UserController {
       const result = await this.userBusiness.deleteUser(id);
       res.status(200).send(result);
     } catch (error) {
+      console.log(error);
+
       if (error instanceof ZodError) {
         res.status(400).send(error.issues);
       } else if (error instanceof BaseError) {

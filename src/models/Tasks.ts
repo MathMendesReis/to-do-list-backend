@@ -23,10 +23,14 @@ export class Tasks {
     public set_id(value: string) {
         this.id = value;
     }
+    public get_description():string{
+        return this.description
+    }
     constructor(
         private id: string,
         private title: string,
         private created_at: string,
+        private description:string,
         private status: number
     ){}
 }
