@@ -13,4 +13,4 @@ const usersTaskController = new UsersTasksController(
 
 userTaskRouter.post('/',usersTaskController.postUsers_tasks)
 userTaskRouter.get('/',usersTaskController.getAllUsers_tasks)
-userTaskRouter.delete('/',usersTaskController.deleteUsers_tasks)
+userTaskRouter.delete('/tasks',usersTaskController.deleteUsers_tasks)

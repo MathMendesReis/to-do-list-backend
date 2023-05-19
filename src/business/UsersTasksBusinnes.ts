@@ -29,30 +29,24 @@ export class UsersTasksBusiness {
       message: `User atribuído à tarefa com sucesso`,
     };
   };
+
+
   public getAllUsers_tasks = async () => {
-    const usersTasks = await this.usersTasksBaseDataBase.getAllUsers_tasks();
-    if(usersTasks.length === 0){
+    const tasks = await this.usersTasksBaseDataBase.getAllTask()
+    if(tasks.length === 0){
       throw new NotFoundError("nenhuma task encontrada");
     }
-    const formartResult = usersTasks.map((result)=>{
-      return{
-        id: result.task_id,
-        title: result.title,
-        description:result.description,
-        created_at:result.created_at, 
-        status:result.status,
-        responsibles: [
-    {
-      id:result.users_id, 
-      name:result.name, 
-      email:result.email, 
-      password:result.password 
-    }
-  ]
-      }
-    })
+
+    const result = await Promise.all(tasks.map(async (task) => {
+      const responsibles = await this.usersTasksBaseDataBase.getAllUsers_tasks(task.id);
+      return {
+        ...task,
+        responsibles: responsibles
+      };
+    }));
+ 
     
-  return formartResult
+  return result
 }
   public deleteUsers_tasks = async (input: inputDTOUsersTasks) => {
     const userDataBase = new UserDataBase();
@@ -65,6 +59,7 @@ export class UsersTasksBusiness {
     if (!task) {
       throw new NotFoundError("task não encontrado");
     }
+
 
     await this.usersTasksBaseDataBase.deleteUsers_tasks(input)
     return {
